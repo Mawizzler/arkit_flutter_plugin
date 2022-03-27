@@ -319,6 +319,11 @@ class ARKitController {
     _channel.invokeMethod<void>('dispose');
   }
 
+  Future<void> setDetectionImages(List<ARKitReferenceImage> images) {
+    return _channel.invokeMethod<void>('setDetectionImages',
+        {"detectionImages": images.map((i) => i.toJson()).toList()});
+  }
+
   Future<void> add(ARKitNode node, {String? parentNodeName}) {
     final params = _addParentNodeNameToParams(node.toMap(), parentNodeName);
     _subsribeToChanges(node);
