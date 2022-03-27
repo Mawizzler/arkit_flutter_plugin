@@ -34,6 +34,10 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             initalize(arguments!, result)
             result(nil)
             break
+        case "setDetectionImages":
+            setDetectionImages(arguments!)
+            result(nil)
+            break
         case "addARKitNode":
             onAddNode(arguments!)
             result(nil)
