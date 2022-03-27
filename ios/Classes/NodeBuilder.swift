@@ -38,7 +38,7 @@ func updateNode(_ node: SCNNode, fromDict dict: Dictionary<String, Any>, forDevi
     }
 }
 
-fileprivate func createReferenceNode(_ dict: Dictionary<String, Any>) -> SCNReferenceNode {
+fileprivate func createReferenceNode(_ dict: Dictionary<String, Any>) -> SCNNode {
     let url = dict["url"] as! String
     var referenceUrl: URL
     if let bundleURL = Bundle.main.url(forResource: url, withExtension: nil){
@@ -46,8 +46,16 @@ fileprivate func createReferenceNode(_ dict: Dictionary<String, Any>) -> SCNRefe
     }else{
         referenceUrl = URL(fileURLWithPath: url)
     }
+
+    if(url.contains(".obj")){
+        let objScene = try? SCNScene(url: referenceUrl, options: nil)
+        let node = objScene?.rootNode.childNodes.first
+        return node!
+    }
+
     let node = SCNReferenceNode(url: referenceUrl)
     node?.load()
+  
     return node!
 }
 
