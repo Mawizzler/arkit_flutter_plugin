@@ -7,6 +7,7 @@ part 'arkit_reference_image.g.dart';
 class ARKitReferenceImage {
   const ARKitReferenceImage({
     required this.name,
+    required this.data,
     required this.physicalWidth,
   });
 
@@ -15,6 +16,8 @@ class ARKitReferenceImage {
 
   /// The physical width of the image in meters.
   final double physicalWidth;
+
+  final String data;
 
   static ARKitReferenceImage fromJson(Map<String, double> map) =>
       _$ARKitReferenceImageFromJson(map);
