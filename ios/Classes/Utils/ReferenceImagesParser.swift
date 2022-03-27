@@ -11,7 +11,8 @@ func parseReferenceImagesSet(_ images: Array<Dictionary<String, Any>>) -> Set<AR
 func parseReferenceImage(_ dict: Dictionary<String, Any>) -> ARReferenceImage? {
     if let physicalWidth = dict["physicalWidth"] as? Double,
         let name = dict["name"] as? String,
-        let image = getImageByName(name),
+        let data = dict["data"] as? String,
+        let image = getImageByName(data),
         let cgImage = image.cgImage {
         
         let referenceImage = ARReferenceImage(cgImage, orientation: CGImagePropertyOrientation.up, physicalWidth: CGFloat(physicalWidth))
