@@ -52,14 +52,13 @@ extension FlutterArkitView {
     }
     
     func onGetNodeBoundingBox(_ arguments: Dictionary<String, Any>, _ result:FlutterResult) {
-        guard let geometryArguments = arguments["geometry"] as? Dictionary<String, Any> else {
-            logPluginError("geometryArguments deserialization failed", toChannel: channel)
-            result(nil)
-            return
-        }
-        let geometry = createGeometry(geometryArguments, withDevice: sceneView.device)
-        let node = createNode(geometry, fromDict: arguments, forDevice: sceneView.device)
-        
+        // guard let geometryArguments = arguments["geometry"] as? Dictionary<String, Any> else {
+        //     logPluginError("geometryArguments deserialization failed", toChannel: channel)
+        //     result(nil)
+        //     return
+        // }
+        // let geometry = createGeometry(geometryArguments, withDevice: sceneView.device)
+        let node = createNode(nil, fromDict: arguments, forDevice: sceneView.device)
         let resArray = [serializeVector(node.boundingBox.min), serializeVector(node.boundingBox.max)]
         result(resArray)
     }
