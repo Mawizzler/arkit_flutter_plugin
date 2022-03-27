@@ -85,4 +85,11 @@ extension FlutterArkitView {
         }
         return .camera
     }
+
+    func setDetectionImages(_ arguments: Dictionary<String, Any>){
+        configuration = createWorldTrackingConfiguration(arguments);
+         if (configuration != nil) {
+             sceneView.session.run(self.configuration!, options: [.resetTracking, .removeExistingAnchors])
+        }
+    }
 }
