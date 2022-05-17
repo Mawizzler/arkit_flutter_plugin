@@ -324,6 +324,12 @@ class ARKitController {
         {"detectionImages": images.map((i) => i.toJson()).toList()});
   }
 
+  void setWorldOrigin(Matrix4 worldOrigin) async {
+    var params = Map<String, dynamic>();
+    params['worldOrigin'] = _matrixConverter.toJson(worldOrigin);
+    _channel.invokeMethod<void>('setWorldOrigin', params);
+  }
+
   Future<void> add(ARKitNode node, {String? parentNodeName}) {
     final params = _addParentNodeNameToParams(node.toMap(), parentNodeName);
     _subsribeToChanges(node);
@@ -379,6 +385,16 @@ class ARKitController {
     final typed = result!.map((e) => List<double>.from(e));
     final vectors = typed.map((e) => _vector3Converter.fromJson(e));
     return vectors.toList();
+  }
+
+  void setNodeOpacity(ARKitNode node, opacity) async {
+    _channel.invokeMethod<void>(
+        'setNodeOpacity', _getHandlerParams(node, 'opacity', opacity));
+  }
+
+  void hideNode(ARKitNode node, hide) async {
+    _channel.invokeMethod<void>(
+        'hideNode', _getHandlerParams(node, 'hide', hide));
   }
 
   Future<ARKitLightEstimate?> getLightEstimate() async {

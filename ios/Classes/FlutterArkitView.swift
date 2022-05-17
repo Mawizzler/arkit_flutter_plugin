@@ -34,6 +34,10 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             initalize(arguments!, result)
             result(nil)
             break
+        case "setWorldOrigin":
+            setWorldOrigin(arguments!)
+            result(nil)
+            break
         case "setDetectionImages":
             setDetectionImages(arguments!)
             result(nil)
@@ -68,6 +72,12 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             break
         case "getNodeBoundingBox":
             onGetNodeBoundingBox(arguments!, result)
+            break
+        case "setNodeOpacity":
+            onSetNodeOpacity(arguments!)
+            break
+        case "hideNode":
+            onHideNode(arguments!)
             break
         case "transformationChanged":
             onTransformChanged(arguments!)

@@ -147,7 +147,20 @@ fileprivate func parsePropertyContents(_ dict: Any?) -> Any? {
   }
   
   if let imageName = dict["image"] as? String {
-    return getImageByName(imageName)
+    if let img = UIImage(named: imageName) {
+      return img
+    }
+    if let path = Bundle.main.path(forResource: SwiftArkitPlugin.registrar!.lookupKey(forAsset: imageName), ofType: nil) {
+      return UIImage(named: path)
+    }
+    if let url = URL.init(string: imageName) {
+      do {
+        let data = try Data.init(contentsOf: url)
+        return UIImage(data: data)
+      } catch {
+          
+      }
+    }
   }
   if let color = dict["color"] as? Int {
     return UIColor(rgb: UInt(color))

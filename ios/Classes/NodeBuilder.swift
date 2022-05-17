@@ -40,6 +40,8 @@ func updateNode(_ node: SCNNode, fromDict dict: Dictionary<String, Any>, forDevi
 
 fileprivate func createReferenceNode(_ dict: Dictionary<String, Any>) -> SCNNode {
     let url = dict["url"] as! String
+    let name = dict["name"] as? String
+
     var referenceUrl: URL
     if let bundleURL = Bundle.main.url(forResource: url, withExtension: nil){
         referenceUrl = bundleURL
@@ -50,6 +52,11 @@ fileprivate func createReferenceNode(_ dict: Dictionary<String, Any>) -> SCNNode
     if(url.contains(".obj")){
         let objScene = try? SCNScene(url: referenceUrl, options: nil)
         let node = objScene?.rootNode.childNodes.first
+        return node!
+    }
+    if(url.contains(".scn")){
+        let virtualObjectScene = try? SCNScene(url: referenceUrl, options: nil)
+        let node = virtualObjectScene?.rootNode.childNode(withName: name!, recursively: false)
         return node!
     }
 

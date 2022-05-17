@@ -52,15 +52,39 @@ extension FlutterArkitView {
     }
     
     func onGetNodeBoundingBox(_ arguments: Dictionary<String, Any>, _ result:FlutterResult) {
-        // guard let geometryArguments = arguments["geometry"] as? Dictionary<String, Any> else {
-        //     logPluginError("geometryArguments deserialization failed", toChannel: channel)
-        //     result(nil)
-        //     return
-        // }
-        // let geometry = createGeometry(geometryArguments, withDevice: sceneView.device)
-        let node = createNode(nil, fromDict: arguments, forDevice: sceneView.device)
+        let geometryArguments = arguments["geometry"] as? Dictionary<String, Any>
+        let geometry = createGeometry(geometryArguments, withDevice: sceneView.device)
+        let node = createNode(geometry, fromDict: arguments, forDevice: sceneView.device)
         let resArray = [serializeVector(node.boundingBox.min), serializeVector(node.boundingBox.max)]
         result(resArray)
+    }
+
+    func onSetNodeOpacity(_ arguments: Dictionary<String, Any>) {
+       guard let name = arguments["name"] as? String,
+            let opacity = arguments["opacity"] as? Double
+            else {
+                logPluginError("deserialization failed", toChannel: channel)
+                return
+        }
+        if let node = sceneView.scene.rootNode.childNode(withName: name, recursively: true) {
+            node.opacity = opacity
+        } else {
+            logPluginError("node not found", toChannel: channel)
+        }
+    }
+
+    func onHideNode(_ arguments: Dictionary<String, Any>) {
+       guard let name = arguments["name"] as? String,
+            let hide = arguments["hide"] as? Bool
+            else {
+                logPluginError("deserialization failed", toChannel: channel)
+                return
+        }
+        if let node = sceneView.scene.rootNode.childNode(withName: name, recursively: true) {
+            node.isHidden = hide;
+        } else {
+            logPluginError("node not found", toChannel: channel)
+        }
     }
     
     func onTransformChanged(_ arguments: Dictionary<String, Any>) {

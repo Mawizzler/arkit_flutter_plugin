@@ -92,4 +92,10 @@ extension FlutterArkitView {
              sceneView.session.run(self.configuration!, options: [.resetTracking, .removeExistingAnchors])
         }
     }
+
+    func setWorldOrigin(_ arguments: Dictionary<String, Any>){
+        if let worldOrigin = arguments["worldOrigin"] as? Array<NSNumber> {
+            sceneView.session.setWorldOrigin(relativeTransform: simd_float4x4(deserializeMatrix4(worldOrigin)))
+        }
+    }
 }
