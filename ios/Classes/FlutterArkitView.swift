@@ -54,6 +54,10 @@ class FlutterArkitView: NSObject, FlutterPlatformView {
             onRemoveNode(arguments!)
             result(nil)
             break
+        case "validateARReferenceImage":
+            onValidateImage(arguments!)
+            result(nil)
+            break
         case "removeARKitAnchor":
             onRemoveAnchor(arguments!)
             result(nil)

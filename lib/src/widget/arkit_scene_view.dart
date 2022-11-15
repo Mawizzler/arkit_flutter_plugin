@@ -31,6 +31,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
 
+import 'arkit_reference_image.dart';
+
 typedef ARKitPluginCreatedCallback = void Function(ARKitController controller);
 typedef StringResultHandler = void Function(String? text);
 typedef AnchorEventHandler = void Function(ARKitAnchor anchor);
@@ -294,6 +296,7 @@ class ARKitController {
 
   /// Called once per frame
   Function(double time)? updateAtTime;
+  Function(String key, bool error)? onImageValidated;
 
   /// Called when camera tracking state is changed;
   Function(ARTrackingState trackingState, ARTrackingStateReason? reason)?
@@ -353,6 +356,11 @@ class ARKitController {
 
   Future<void> remove(String nodeName) {
     return _channel.invokeMethod('removeARKitNode', {'nodeName': nodeName});
+  }
+
+  Future<void> validateARReferenceImage(ARKitReferenceImage image) {
+    return _channel
+        .invokeMethod('validateARReferenceImage', {'image': image.toJson()});
   }
 
   Future<void> removeAnchor(String anchorIdentifier) {
@@ -537,6 +545,11 @@ class ARKitController {
                 ARKitAnchor.fromJson(Map<String, dynamic>.from(call.arguments));
             onAddNodeForAnchor!(anchor);
           }
+          break;
+        case 'didValidateImage':
+          var arguments = Map<String, dynamic>.from(call.arguments);
+          onImageValidated!(
+              arguments["key"] as String, arguments["error"] as bool);
           break;
         case 'didUpdateNodeForAnchor':
           if (onUpdateNodeForAnchor != null) {

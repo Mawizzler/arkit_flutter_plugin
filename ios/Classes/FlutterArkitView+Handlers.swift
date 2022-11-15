@@ -40,6 +40,21 @@ extension FlutterArkitView {
         let node = sceneView.scene.rootNode.childNode(withName: nodeName, recursively: true)
         node?.removeFromParentNode()
     }
+
+    func onValidateImage(_ arguments: Dictionary<String, Any>) {
+        if let detectionImage = arguments["image"] as? Dictionary<String, Any> {
+               let referenceImage = parseReferenceImage(detectionImage)!
+               referenceImage.validate(){ (error) in
+                    if(error != nil){
+                         let params = ["key": referenceImage.name,"error":true]
+                         self.channel.invokeMethod("didValidateImage", arguments: params)
+                    }else{
+                         let params = ["key": referenceImage.name,"error":false]
+                         self.channel.invokeMethod("didValidateImage", arguments: params)
+                    }
+               }
+            }
+    }
   
     func onRemoveAnchor(_ arguments: Dictionary<String, Any>) {
         guard let anchorIdentifier = arguments["anchorIdentifier"] as? String else {
